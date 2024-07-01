@@ -1,0 +1,12 @@
+convert
+утилита imagemagic
+
+Примеры:
+картинку в текст:
+convert perec.JPEG -resize 70\!x35\! -colors 3 1.xpm
+cat 1.xpm
+
+делаем фон картинки прозрачным
+convert -trim pic1.png pic2.png
+convert -transparent white pic2.png pic3.png
+convert -transparent -fuzz 10% white pic2.png pic3.png  (если предидущая строка не помогла)

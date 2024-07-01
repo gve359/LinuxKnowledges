@@ -1,0 +1,173 @@
+bash
+
+ФЛАГИ
+-n - исполнить скрипт, не исполнять его. Так можно проверить синтаксис.
+-x - трассировать весь скрипт. 
+
+
+ДОПОЛНИТЕЛЬНО
+set -x и set +x - трассировать частично
+set -o nounset  - оборвать скрипт, если встретится неопределённая переменная
+
+
+
+ВИДЫ ПАРАМЕТРОВ
+$0    Имя скрипта с путём
+$[1..9],{N>9}  Позиционные параметры.
+$#    Количество аргументов
+$*    Все аргументы.
+          Без кавычек, раскрытие даст массив аргументов, где всё, где был пробел станет отдельным аргументом.
+          Пример:
+              script "q w" e r
+              q
+              w
+              e
+              r
+	  В кавычках, раскрытие даст единое слово, состоящее из исходных аргументов. 
+          Пример:
+              script "q w" e r
+              "q w e r"
+          Разделителем будет первая буква системной переменной $IFS. 
+          Если IFS не установлен, то разделителем будет пробел. Если IFS = null, то все параметры слипнутся. 
+$@    Все аргументы.
+	  Без кавычек, раскрытие будет подобно $*
+          В кавычках, раскроет массив аргументов, подобный исходному.
+              script "q w" e r
+              q w
+              e
+              r
+$$    Идентификатор PID для выполняющегося сценария
+$!    Идентификатор PID для последнего фонового процесса
+$-    Отображение текущих опций интерпретатора команд. Аналогично применению команды set.
+$?    Показывает exit код последней команды.
+? $_    Как $0, но со своими заморочками.
+
+Не параемтры, но переменные, имеющий отношение к скриптам:
+$USER - Пользователь, запустивший скрипт.
+$HOSTNAME - Комп, на котором запущен скрипт
+$SECONDS - Секунд, прошедших с начала скрипта
+$RANDOM - Просто случайное значение
+$LINENO - Номер текущей строки скрипта
+
+
+
+
+СВЯЗКИ КОМАНД
+|  - конвейерная передача результатов пердидущей команды следующей
+&& - следующая команда выполняется, если предидущая завершилась без ошибок
+|| - следующая команда выполняется, если предидущая завершилась c ошибкой
+() - группировка команд
+;  - последовательное исполнение команд не зависимое от результатов.
+     Например, чтобы вывести время после долгой команды; или чтобы дать команду не знакомому с командной строкой юзеру.
+
+
+ЕСЛИ
+Обычный вид конструкции IF
+if commands1
+then
+   commands2
+else
+   commands3
+fi
+
+if переходит к then, когда принимает exitcode = 0. Иначе, переходит к else.
+    
+if command - как описано выше. Просто непривычно видеть в качестве команды такую, которая делает что-то, ничего не выдавая. Но она выдаёт exitcode.
+if (command) - это запуск команды в подшелле. Например, чтобы экранировать её побочные эффекты.
+if [ condition ] - это альтернативныая форма утилиты test. Именно test выдаёт exitcode, но ей можно приказать сравнить что-то с чем-то.
+if [[ condition ]] - синтаксический сахар, позволяющий сравнивать C-подобным образом.
+if (( condition )) - синтаксический сахар, математический. Если результат <> 0 тогда true, иначе false.
+
+
+case $answer in
+	y|yes|Y|YES|Yes) 
+		#do something
+	;;
+	n|no|N|NO|No) 
+		#do something
+	;;
+	*) 
+		#do something
+	;;
+esac
+
+СТАНДАРТНЫЕ ВЫВОДЫ (не закончено)
+0 - stdin  стандартный поток ввода
+1 - stdout стандартный поток вывода
+2 - stderr стандартный поток ошибок
+Файловый ввод–вывод
+Перенаправление
+	echo "Unknown account type." >&2
+
+
+ФУНКЦИЯ
+MyFunction(){ parameter1="$1"
+  ...
+}
+
+
+Трюки преобразований
+Арифметика $(( n1 + n2 ))
+Получение подстроки ${ mystr : 0 : 2 }  или обрезка ${ mystr : 2 }
+Отрезать от строки последние 4 символа echo ${a::-4}
+Подсчёт символов в переменной          echo ${#var}
+Количество элементов массива           echo ${#array[@]}
+Количество символов в элементе массива echo ${#array[3]}
+
+
+
+КОНСТРУКЦИИ
+
+цикл for++
+for (( i=1; i<10; i++ ))
+do
+	echo $i
+done
+	
+Обход параметров
+for i in "$@"; do 
+	echo "@ '$i'"; 
+done
+
+
+Чтение списка из файла
+	One way to do it is:	
+	while read p; do
+		echo "$p"
+	done <peptides.txt
+	
+	As pointed out in the comments, this has the side effects of trimming leading whitespace, interpreting backslash sequences, and skipping the last line if it's missing a terminating linefeed. If these are concerns, you can do:	
+	while IFS="" read -r p || [ -n "$p" ]
+		do
+		printf '%s\n' "$p"
+	done < peptides.txt
+
+Чтение списка из переменной
+You can use a while loop with process substitution:
+
+while read -r line
+do
+    echo "$line"
+done < <(jobs)
+
+An optimal way to read a multiline variable is to set a blank IFS variable and printf the variable in with a trailing newline:
+
+# Printf '%s\n' "$var" is necessary because printf '%s' "$var" on a
+# variable that doesn't end with a newline then the while loop will
+# completely miss the last line of the variable.
+while IFS= read -r line
+do
+   echo "$line"
+done < <(printf '%s\n' "$var")
+
+	
+Чтение файла в переменную как есть. (Cat будет разбивать файл на элементы)
+	In cross-platform, lowest-common-denominator sh you use:
+	#!/bin/sh
+	value=`cat config.txt`
+	echo "$value"
+	
+	In bash or zsh, to read a whole file into a variable without invoking cat:
+	#!/bin/bash
+	value=$(<config.txt)
+	echo "$value"

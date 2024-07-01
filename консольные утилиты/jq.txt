@@ -1,0 +1,22 @@
+jq - обработака json
+
+ПРИМЕРЫ
+	формируем json с ноля. -n - говорит что с ноля. а json формируем сами
+	jq -n '{"key1":"value1", "key2":"value2"}'
+
+	пример json из википедии
+	jq -n '{"key1":"value1", "address":{"streetAddress": "Московское ш., 101, кв.101", "city": "Ленинград"}, "phoneNumbers":["812 123-1234","916 123-4567"]}' > wiki.json
+	
+	передаём переменную в jq
+	jq -n --arg greeting world '{"hello":$greeting}'
+	
+	обнволяем json
+	cat wiki.json | jq --arg key streetAddress --arg value УлицаПушкина_ДомКалатушкина '.address[$key] = $value'
+	
+	удаляем элемент
+	cat wiki.json | jq 'del (.address)'
+	
+	запаковываем вывод ls в json
+	set size (ls -lad /home/newfag/Temp/ | awk '{print $5}')
+	set name (ls -lad /home/newfag/Temp/ | awk '{print $9}')
+	jq -n '{"size":"'$size'", "name":"'$name'"}'

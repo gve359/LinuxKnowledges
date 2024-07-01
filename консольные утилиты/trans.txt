@@ -1,0 +1,11 @@
+translate-shell trans - online переводчик, отсылающий запросы на переводные сайты
+
+Примеры:
+	trans en:ru garlic
+	trans en:ru 'big russian boss'
+	trans en:ru -i Temp/enTxt.txt
+	echo 'божья коровка' | trans -e yandex ru:en
+	trans en:ru -I                               - интерактивный режим
+
+	trans -brief en:ru 'general'   - перевод краткий
+	trans -d en:ru 'general'       - перевод словарный

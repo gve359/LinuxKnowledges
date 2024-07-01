@@ -1,0 +1,67 @@
+avconv=ffmpeg обработка видео
+
+
+
+выдрать из видео каждый кадр
+avconv -i input.flv -r 1 qq%d.png
+avconv -i input.flv qq%d.png 
+
+gif to webm
+avconv -i input.gif -c:v libvpx -crf 12 -b:v 500K output.webm
+    -crf values can go from 4 to 63. Lower values mean better quality.
+    -b:v is the maximum allowed bitrate. Higher means better quality.
+    
+Если не работает, то добавить -auto-alt-ref 0
+ffmpeg -i 15563883132390.gif -c:v libvpx -crf 4 -b:v 10000K -auto-alt-ref 0 output3.webm
+
+Извлечь аудио из видео
+ffmpeg -i filename.mp4 filename.mp3
+
+Записываем видео с экрана (линукс вариант)
+ffmpeg -f alsa -ac 2 -i hw:0,0 -acodec pcm_s16le -f x11grab -s 800x600 -r 25 -i :0.0 -vcodec qtrle myVideo.mov
+
+Записываем видео с экрана (виндус вариант)
+	ffmpeg.exe -y -rtbufsize 100M -f gdigrab -framerate 30 -probesize 10M -draw_mouse 1 -i desktop -c:v libx264 -r 30 -preset ultrafast -tune zerolatency -crf 25 -pix_fmt yuv420p screen.mp4
+   
+    опции:
+    -y — если в текущей директории есть файл screen.mp4, то ffmpeg перезапишет его не задавая вопросов;
+    -rtbufsize 100M — буфер под видео. Запись с экрана должна идти бысто и гладко, чтобы не было дропов (пропусков) кадров. Поэтому лучше сначала записывать видео в память (так  быстрее чем на диск), а затем ffmpeg сам перенесет из памяти на диск.
+    -f gdigrab — опция необходима если вы пишите экран в Windows;
+    -framerate 30 — частота кадров результирующего видео;
+    -probesize 10M — количество кадров необходимое ffmpeg для идентификации потока. Вроде со значением 10M работает нормально;
+    -draw_mouse 1 — рисовать мышку;
+    -i desktop — говорим ffmpeg записывать весь экран;
+    -c:v libx264 — сжимать будем в формат MP4 кодеком x264;
+    -r 30 — кодек запишет видео с частотой 30 кадров в секунду;
+    -preset ultrafast — говорим кодеку, чтобы долго не раздумывал и кодировал видеопоток, как можно быстрее (при записи экрана это актуально);
+    -tune zerolatency — опция кодека x264 для ускорения кодирования;
+    -crf 25 — качество записываемого видео (большее значение — хуже видео, меньшее — лучше);
+    -pix_fmt yuv420p — цветорвой формат результирующего видео.
+
+	Минимальная запись с экрана
+	ffmpeg.exe -f gdigrab -i desktop screen.mp4
+
+Записать звук с микрофона (виндус вариант)
+	сначала получим список устройств
+	ffmpeg -list_devices true -f dshow -i dummy	
+	ffmpeg -f dshow -i audio="Микрофон (Realtek High Definition Audio)" -ac 2 -acodec libmp3lame -ab 320k audio.mp3 -hide_banner -y
+	Минимальная запись с микрофона
+	ffmpeg -f dshow -i audio="Микрофон (Realtek High Definition Audio)" audio.mp3
+
+Записываем видео с экрана и микрофона (виндус вариант)
+	Минимальная запись с экрана и микрофона. Тупо комбинация обоих минималок
+	ffmpeg.exe -f gdigrab -i desktop -f dshow -i audio="Микрофон (Realtek High Definition Audio)" wow.mp4
+	Комбинация. экран на сколько получилось лучший(резкие движения таки не записывает) и полностью лучший микрофон. Возможно, лучше записывать 2 файла отдельно, а потом соединять их. Черех ffmpeg или vlc.
+	ffmpeg.exe -rtbufsize 100M -f gdigrab -framerate 30 -probesize 10M -draw_mouse 1 -i desktop -pix_fmt yuv420p -f dshow -i audio="Микрофон (Realtek High Definition Audio)" -ac 2 -acodec libmp3lame -ab 320k -hide_banner -y wow.mp4
+	Это не готовая команда, но чуваку с Q&A сказали что так выйдет
+	ffmpeg -f dshow -i video="FaceCam 1320":audio="Microphone (Realtek High Defini" -vcodec h264 -acodec libmp3lame -ac 2 -b:a 128k -ar 44100 -f flv rtmp://localhost/streamApp/cam1
+	
+	
+	
+Записать звук с колонок
+Найти колонки
+pacmd list-sources | grep 'monitor>'
+ffmpeg -f pulse -i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor outf.mp3
+
+
+

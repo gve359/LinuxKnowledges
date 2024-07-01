@@ -1,0 +1,59 @@
+lsblk - выдать список болчных устройств
+
+	-a --all        - Вывести все. Включая пустые устройства.
+	-а --fs         - Вывести с метками разделов.
+	-o --output     - вывести колонки, которые перечислишь
+	-O --output-all - вывести все колонки
+
+
+Available output columns:
+        NAME  имя устройства
+       KNAME  internal kernel device name
+     MAJ:MIN  старший:младший номер устройства
+      FSTYPE  тип файловой системы
+  MOUNTPOINT  куда примонтировано устройство
+       LABEL  МЕТКА файловой системы
+        UUID  UUID файловой системы
+    PARTTYPE  UUID типа раздела
+   PARTLABEL  МЕТКА раздела
+    PARTUUID  UUID раздела
+   PARTFLAGS  флаги разделов
+          RA  read-ahead of the device
+          RO  устройство только для чтения
+          RM  съёмное устройство
+     HOTPLUG  съемное устройство или устройство с горячим подключением (usb, pcmcia, ...)
+       MODEL  идентификатор устройства
+      SERIAL  серийный номер диска
+        SIZE  размер устройства
+       STATE  состояние устройства
+       OWNER  имя пользователя
+       GROUP  название группы
+        MODE  device node permissions
+   ALIGNMENT  смещение выравнивания
+      MIN-IO  минимальный размер I/O
+      OPT-IO  оптимальный размер I/O
+     PHY-SEC  размер физического сектора
+     LOG-SEC  размер логического сектора
+        ROTA  вращающееся устройство
+       SCHED  имя планировщика I/O
+     RQ-SIZE  запросить размер очереди
+        TYPE  тип устройства
+    DISC-ALN  discard alignment offset
+   DISC-GRAN  discard granularity
+    DISC-MAX  discard max bytes
+   DISC-ZERO  discard zeroes data
+       WSAME  write same max bytes
+         WWN  уникальный идентификатор хранилища
+        RAND  добавляет случайное значение
+      PKNAME  internal parent kernel device name
+        HCTL  Host:Channel:Target:Lun для SCSI
+        TRAN  device transport type
+  SUBSYSTEMS  de-duplicated chain of subsystems
+         REV  ревизия устройства
+      VENDOR  производитель устройства
+       ZONED  zone model
+
+
+ПРИМЕРЫ
+	lsblk
+

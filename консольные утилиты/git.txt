@@ -1,0 +1,40 @@
+git init
+git add *
+git commit -m "upload project"
+git push PatternMVP_simplest master
+git remote add origin https://github.com/USER/demo.git
+
+git remote -v   - список удалённых репозиториев
+
+git config --global user.email "gve.wrk@yandex.ru"
+git config --global user.name "govorukhin"
+
+git clone https://github.com/govorukhin/PatternMVP_simplest
+git clone https://github.com/govorukhin/PatternApplicationController_simplest
+git clone https://github.com/govorukhin/ApplicationController_crossplatform
+git clone https://github.com/govorukhin/Union_AppCtrlr_MVP
+git clone https://github.com/govorukhin/InventoryFolder
+
+git remote add origin https://github.com/govorukhin/Union_AppCtrlr_MVP
+
+git push ApplicationController_crossplatform master
+git push Union_AppCtrlr_MVP master
+
+
+Сработавший порядок команд:
+1) git clone <ссылка на web репозиторий>    //клонирование это просто скачивание.
+2) cd <в клонированный проект>
+3) git init
+4) git add *
+5) git commit -m "upload project"
+6) git push origin master
+(если не сработает, запустить:
+  git remote -v (если пусто то:)
+  git remote add origin https://github.com/govorukhin/Union_AppCtrlr_MVP
+  git push origin master
+)
+
+
+Создаём новый проект. 
+Сначала на сайте, потом клонируем и работаем как с уже существующим.
+

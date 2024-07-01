@@ -1,0 +1,44 @@
+Это более оптимальное копирование. rsync создан как замена rcp и scp
+
+ОБЗОР
+rsync изначально и неотключаемо работает по списку разностей. Поэтому для имитации /mir из robocopy достаточно указать лишь --delete
+
+Ссылкам пути на новое место не меняет ни один инструмент. Если делать бэкап, то и возвращать его на прежнее место.
+
+Лорчане сказали "делать бэкапы лучше rsync'ом, он считает чексуммы по-дефолту"
+
+При указании пути, делается так:
+folder - скопирует папку
+folder/ - скопирует содержимое папки
+
+
+
+ФЛАГИ
+
+    --progress              говорить что делает (что скопировал и сколько передал. может для сети?)
+-v, --verbose               говорить что делает (по умолчанию ничего не говорит. Процентов передачи не показывает)
+-a, --archive               archive mode; equals -rlptgoD (no -H,-A,-X)  Документация по бэкапу Убунту говорит что -av достаточно.
+-r, --recursive             будет копировать подпапки
+-l, --links                 copy symlinks as symlinks
+-p, --perms                 preserve permissions
+-t, --times                 preserve modification times
+-g, --group                 preserve group
+-o, --owner                 preserve owner (super-user only)
+-D                          same as --devices --specials
+-H, --hard-links            preserve hard links
+-A, --acls                  preserve ACLs (implies -p)
+-X, --xattrs                preserve extended attributes
+-x, --one-file-system       не выходить за границы фаловой системы
+-u, --update                не копировать если такой файл уже есть в назначении, И ЕСЛИ ДАТА В НАЗНАЧЕНИИ !НОВЕЕ! и если дата та-же но размер другой.
+--delete                    удалить в назначении те файлы, которых не было в источнике. Таким образом папка зеркалируется. 
+                            !!!не будет удалять если используется подстановка со звёздочкой Source/* !!!
+--dry-run                   симуляция копирования
+                            
+
+                            
+ПРИМЕРЫ
+* Синхронизация
+rsync --recursive --delete     --hard-links --links     --archive --xattrs --acls     --progress     SourceFolder/ TargetFolder/
+
+БАГИ
+Там, где была проблема, видимо нужны обе ext4. Ну или хотябы одна ФС.

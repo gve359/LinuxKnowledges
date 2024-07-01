@@ -1,0 +1,38 @@
+pwd   - Get-Location
+cd    - Set-Location
+ls    - Get-ChildItem
+find  - Get-ChildItem
+cp    - Copy-Item
+rm    - Remove-Item
+mkdir - New-Item
+touch - New-Item
+cat   - Get-Content
+tail  - Get-Content
+ps    - Get-Process
+grep  - Where-Object
+grep  - Select-String
+uname - Get-CimInstance
+mkfs  - New-Volume or Format-Volume
+ping  - Test-Connection
+man   - Get-Help
+cut   - Select-Object
+
+
+
+
+Location.Get
+Location.Set
+ChildItem.Get
+ChildItem.Get
+Item.Copy
+Item.Remove
+Item.New
+Object.Where
+Object.Select
+String.Select
+Content.Get
+Process.Get
+CimInstance.Get
+Volume.New/Format
+Connection.Test
+Help.Get

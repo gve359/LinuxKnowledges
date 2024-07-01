@@ -1,0 +1,192 @@
+fish
+
+if. 
+Документация говорит, что можно писать [] вместо test.
+Документация предупреждает, что нужно заключать проверяемую переменную в кавычки.
+Со списками if не работает.
+
+Рабочий -n:
+root@terminal1 ~> if test -z (echo (ls ~/void))
+                      echo da
+                  else 
+                      echo no
+                  end
+da
+root@terminal1 ~> if test -n (echo (ls ~/void))
+                      echo da
+                  else 
+                      echo no
+                  end
+no
+root@terminal1 ~> if test -z (echo (ls ~/novoid))
+                      echo da
+                  else
+                      echo no
+                  end
+no
+root@terminal1 ~> if test -n (echo (ls ~/novoid))
+                      echo da
+                  else
+                      echo no
+                  end
+da
+
+-z точнее и короче.
+root@terminal1 ~> if test -z (ls ~/void)
+                      echo da
+                  else 
+                      echo no
+                  end
+da
+root@terminal1 ~> if test -n (ls ~/void)
+                      echo da
+                  else 
+                      echo no
+                  end
+da
+root@terminal1 ~> if test -z (ls ~/novoid)
+                      echo da
+                  else 
+                      echo no
+                  end
+no
+root@terminal1 ~> if test -n (ls ~/novoid)
+                      echo da
+                  else 
+                      echo no
+                  end
+da
+
+
+Вообще, пока лучше проверять работу проверки заранее.
+
+
+
+
+Тернарный оператор if
+[[ $b=5 ]] && a=1 || a=2
+set a ( test 5 = 6; and echo 1; or echo 2 )
+set a ( if test 5 = 6; echo 1; else; echo 2; end)
+
+
+// Пример отладки в fish
+function f1
+	echo 'step 1'
+	set a 1
+	breakpoint
+	echo 'step 2'
+	echo "a = $a"
+	set a 2
+	breakpoint
+	echo 'step 3'
+end
+
+
+Строку в список
+set a q w e r t y
+eval 'set b ' $a
+for i in $b
+    echo $i
+end
+
+
+Получить хвост списка
+echo $list[2..(count $list)]
+echo $list[2..-1]
+
+
+* Строки.
+Вставить значения переменных впритык 
+echo "$a$b"
+Раскрыть значение переменной в строке
+echo a b "$c" d e
+
+root@terminal1 ~> set x a b c
+developer@terminal1 ~> echo "x = $x"   Нормаально
+x = a b c
+developer@terminal1 ~> echo "x = $x$x" Нормаально
+x = a b ca b c
+root@terminal1 ~> echo "x = "$x   Впритык комбинирует!
+x = a x = b x = c
+developer@terminal1 ~> echo "x = " $x С пробелом!
+x =  a b c
+
+developer@terminal1 ~> set y a 'b c' d
+developer@terminal1 ~> for i in $y
+                           echo $i
+                       end
+a
+b c
+d
+developer@terminal1 ~> set z "$y 1 2 3"
+developer@terminal1 ~> for i in $z
+                           echo $i
+                       end
+a b c d 1 2 3
+developer@terminal1 ~> set z "$y" 1 2 3
+developer@terminal1 ~> for i in $z
+                           echo $i
+                       end
+a b c d
+1
+2
+3
+developer@terminal1 ~> set z $y 1 2 3
+developer@terminal1 ~> for i in $z
+                           echo $i
+                       end
+a
+b c
+d
+1
+2
+3
+
+
+
+string - фунции по работе со строками
+
+Заключить результат в кавычки
+root@terminal1 ~> set b q w e
+root@terminal1 ~> echo \"(echo $b)\"
+"q w e"
+То что это одна строка, а не список с кавычками у 1го и последнего элемента подтверждает что они приделались к началу и концу строки, а не у каждого элемента. Да и for ходит как по строке.
+Впрочем, это не поможет при проверке ls.
+
+
+
+
+
+перенаправление
+fish Initialize 2>&1 | less 
+
+
+Перенос строк в коде (в bahs вижу не сработало а в fish получалось)
+echo "здесь \
+      тут"
+      
+Считываем exitcode и присваиваем переменную одновременно
+function f1
+    echo rrrr
+    return 1
+end
+
+if set q (f1)
+    echo da
+else
+    echo no
+end
+
+Инверсия exitcode
+if not apt-get www
+         echo da
+else
+         echo no
+end
+     
+
+
+цикл for
+for i in (seq 100)
+	echo $i
+end

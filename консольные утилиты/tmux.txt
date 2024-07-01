@@ -1,0 +1,220 @@
+﻿Это терминальный мультиплексор(делит консоль на несколько экранов).
+
+для версии 1.8
+
+В man говорится про С-х и M-x (вместо x любая клавиша). Так вот:
+Tmux использует клавиатурные комбинации из emacs(по умолчанию) и vim .
+С-х и M-x это комбинации из emacs Ctrl + x и Alt + x. 
+
+
+Общее:
+* Префикс перед каждым хоткеем | ctrl + b |
+* Ввод tmux команды            | prefix : |
+* Список хоткеев               | prefix ? | list-keys
+* Показать tmux сообщения      | prefix ~ |
+  (если были)                  |          |
+
+
+Окна:
+* Создать окно.                        | prefix c    | new-window
+* Перейти в оконо (для >9 исп др.спбы) | prefix 0..9 | select-window
+* Перейти в оконо открыв каталог окон  | prefix w    |
+* Закрыть окно                         | prefix &    | kill-window  или написать в командной строке exit |
+* Отобразить информацию о текущем окне | prefix i    |
+* Переименовать текущее окно           | prefix ,    | rename-window
+* Выдать список окон                   |             | list-windows
+* Переместить окно на незанятый индекс |             | move-window
+* Поменять окна местами                |             | swap-window
+* Создать ссылочное окно               |             | link-window
+  !При закрытии ссылочного, закроется  |             |
+  и основное!                          |             |
+* Удалить ссылочное окно               |             | unlink-window
+* Найти окно                           |             | find-window
+  
+
+Пане:
+* Сделать текущую пане окном             | prefix !       | break-pane
+* Разделить пане на 2. Левую и правую    | prefix %       | split-window -h
+* Разделить пане на 2. Верхнюю и нижнюю  | prefix "       | split-window -v
+* Закрыть пане                           | prefix x       | kill-pane  или написать в командной строке exit |
+* Показать информацию о пане             | prefix q       | display-panes
+  (пока индикаторы горят, можно выбрать 
+   пане оп цифре)
+* Выбрать другую пане                    | prefix стрелки | select-pane 
+* Переупорядочить пане шаблонными        | prefix space   | select-layout
+  способами.                             |                |
+* Изменить размер пане                   | prefix         | resize-pane
+  (если терминал в xorg)                 | alt + стрелки  | 
+* Максимизировать текущее пане.          | prefix z       | resize-pane -Z
+  Иными словами скроет не активные.      |                |
+  Повторное нажатие вернёт пане как были.|                |
+* Перебросить пане в другое окно или     |                | move-pane
+  к указаному пане (будет сделан сплит)  |                |
+* Поменять местами 2 пане                |                | swap-pane  
+* Поменять предидущую и текущую          | prefix {}      | rotate-window
+  пане местами                           |                |
+* Выдать список пане                     |                | list-panes
+
+Режим копирования (emacs/vimообразен):
+prefix [ - Перейти в режим копирования.
+           стрелки - перемещение
+           ctrl + пробел - начать выделять
+           alt  + w - скопировать выделенное в буфер
+prefix ]   copy-mode - Вставить из буфера обмена
+
+
+Дексктопо-tmux-овое копирование:
+shift + ЛКМ и tmux позволяет среагировать терминалу konsole. Так и копипастим.
+vim > tmux-овое копирование
+скопировать из vim как из обычной tmux пане
+tmux > vim-овое копирование
+Заранее включить в vime режим вставки. Далее всё как обычно в tmux.
+
+Сетевые комбинации:
+(они есть, но пока в них нет необходимости)
+
+
+gotbletu - youtubeTmux
+
+
+Структура man:
+  Описание
+  Ключи
+  Горячие клавиши
+  Команды
+  Клиенты и сессии
+  Окна и пане
+  Горячие клавиши. Снова.
+  Опции
+  Форматы
+  Имена и заголовки
+  Окружение
+  Строка состояния
+  Буферы
+  Прочее
+  Расширения терминфо
+  Режим управления
+  Файлы
+  Примеры
+
+В info вроде то-же самое но разница в 50 строках.
+
+
+Ниже недообработаный man
+
+
+
+
+break-pane [-dP] [-F format] [-t target-pane]
+display-panes [-t target-client]
+split-window [-dhvP] [-c start-directory] [-F format] [-l size | -p percentage] [-t target-pane] [shell-command]
+join-pane [-bdhv] [-l size | -p percentage] [-t dst-pane] [-s src-pane] 
+move-pane [-bdhv] [-l size | -p percentage] [-t dst-pane] [-s src-pane] 
+kill-pane [-a] [-t target-pane]
+kill-window [-a] [-t target-window]
+select-pane [-lDLRU] [-t target-pane]
+select-window [-lnpT] [-t target-window]
+new-window [-adkP] [-c start-directory] [-F format] [-n window-name]          [-t target-window] [shell-command]
+split-window [-dhvP] [-c start-directory] [-F format] [-l size | -p percentage] [-t target-pane]   [shell-command]
+swap-pane [-dDU] [-s src-pane] [-t dst-pane]
+rename-window [-t target-window] new-name
+resize-pane [-DLRUZ] [-t target-pane] [-x width] [-y height] [adjustment]
+list-panes [-as] [-F format] [-t target]
+list-windows [-a] [-F format] [-t target-session]
+new-window [-adkP] [-c start-directory] [-F format] [-n window-name] [-t target-window] [shell-command]
+rotate-window [-DU] [-t target-window]
+link-window [-dk] [-s src-window] [-t dst-window]
+unlink-window [-k] [-t target-window]
+move-window [-rdk] [-s src-window] [-t dst-window]
+swap-window [-d] [-s src-window] [-t dst-window]
+find-window [-CNT] [-F format] [-t target-window] match-string
+select-layout [-np] [-t target-window] [layout-name]
+
+
+
+
+last-pane [-t target-window]
+  Select the last (previously selected) pane.
+
+last-window [-t target-session]
+  Select the last (previously selected) window.  
+  If no target-session is specified, select the last window of the current session.
+
+respawn-pane [-k] [-t target-pane] [shell-command]
+  Reactivate a pane in which the command has exited (see the remain-on-exit window option).  
+  If shell-command is not given, the command used when the pane was created is executed.  
+  The pane must be already inactive, unless -k is given, in which case any existing command is killed.
+
+respawn-window [-k] [-t target-window] [shell-command]
+  Reactivate a window in which the command has exited (see the remain-on-exit window option).  
+  If shell-command is not given, the command used when the window was created is executed.  
+  The window must be already inactive, unless -k is given, in which case any existing command is killed.
+
+next-window [-a] [-t target-session]
+  Move to the next window in the session.  If -a is used, move to the next window with an alert.
+
+previous-window [-a] [-t target-session]
+  Move to the previous window in the session.  With -a, move to the previous window with an alert.
+
+choose-session [-F format] [-t target-window] [template]
+  Put a window into session choice mode, where a session may be selected interactively from a list.  
+  When one is chosen, ‘%%’ is replaced by the session name in template and the result executed as a command.  
+  If template is not given, "switch-client -t '%%'" is used.  For the meaning of the -F flag, see the FORMATS section.  
+  This command works only if at least one client is attached.
+
+pipe-pane [-o] [-t target-pane] [shell-command]
+  Pipe any output sent by the program in target-pane to a shell command.  A pane may only be piped to one command at a time, any existing pipe is closed
+  before shell-command is executed.  The shell-command string may contain the special character sequences supported by the status-left option.  If no
+  shell-command is given, the current pipe (if any) is closed.
+  The -o option only opens a new pipe if no previous pipe exists, allowing a pipe to be toggled with a single key, for example:
+  bind-key C-p pipe-pane -o 'cat >>~/output.#I-#P'
+
+choose-client [-F format] [-t target-window] [template]
+  Put a window into client choice mode, allowing a client to be selected interactively from a list.  After a client is chosen, ‘%%’ is replaced by the
+  client pty(4) path in template and the result executed as a command.  If template is not given, "detach-client -t '%%'" is used.  For the meaning of the
+  -F flag, see the FORMATS section.  This command works only if at least one client is attached.
+
+capture-pane [-aepPq] [-b buffer-index] [-E end-line] [-S start-line] [-t target-pane]
+  Capture the contents of a pane.  
+  If -p is given, the output goes to stdout, otherwise to the buffer specified with -b or a new buffer if omitted.  
+  If -a is given, the alternate screen is used, and the history is not accessible.  
+  If no alternate screen exists, an error will be returned unless -q is given.
+  If -e is given, the output includes escape sequences for text and background attributes.  
+  -C also escapes non-printable characters as octal \xxx.  
+  -J joins wrapped lines and preserves trailing spaces at each line's end.  
+  -P captures only any output that the pane has received that is the beginning of an as-yet incomplete escape sequence.
+  -S and -E specify the starting and ending line numbers, zero is the first line of the visible pane and negative numbers are lines in the history.  
+  The default is to capture only the visible contents of the pane.
+
+choose-window [-F format] [-t target-window] [template]
+  Put a window into window choice mode, where a window may be chosen interactively from a list.  
+  After a window is selected, ‘%%’ is replaced by the session name and window index in template 
+  and the result executed as a command.  
+  If template is not given, "select-window -t '%%'" is used.  
+  For the meaning of the -F flag, see the FORMATS section.  
+  This command works only if at least one client is attached.
+
+choose-list [-l items] [-t target-window] [template]
+  Put a window into list choice mode, allowing items to be selected.  
+  items can be a comma-separated list to display more than one item.  
+  If an item has spaces, that entry must be quoted.  After an item is chosen, ‘%%’ is 
+  replaced by the chosen item in the template and the result is executed as a command.  
+  If template is not given, "run-shell '%%'" is used.  items also accepts format specifiers.  
+  For the meaning of this see the FORMATS section. 
+  This command works only if at least one client is attached.
+
+choose-tree [-suw] [-b session-template] [-c window-template] [-S format] [-W format] [-t target-window]
+  Put a window into tree choice mode, where either sessions or windows may be selected interactively from a list.  
+  By default, windows belonging to a session are indented to show their relationship to a session.
+  Note that the choose-window and choose-session commands are wrappers around choose-tree.
+  If -s is given, will show sessions.  If -w is given, will show windows.
+  By default, the tree is collapsed and sessions must be expanded to windows with the right arrow key.  
+  The -u option will start with all sessions expanded instead.
+  If -b is given, will override the default session command.  Note that ‘%%’ can be used and will be replaced with the session name.  The default option
+  if not specified is "switch-client -t '%%'".  If -c is given, will override the default window command.  Like -b, ‘%%’ can be used and will be replaced
+  with the session name and window index.  When a window is chosen from the list, the session command is run before the window command.
+  If -S is given will display the specified format instead of the default session format.  If -W is given will display the specified format instead of the
+  default window format.  For the meaning of the -s and -w options, see the FORMATS section.
+  This command works only if at least one client is attached.
+
+

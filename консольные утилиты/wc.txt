@@ -1,0 +1,11 @@
+wc - подсчитать строки, слова, символы, байты
+
+       wc [OPTION]... [FILE]...
+       wc [OPTION]... --files0-from=F
+работает с потоками и файлами
+
+ФЛАГИ
+	-c --bytes
+	-m --chars
+	-l --lines
+	-w --words

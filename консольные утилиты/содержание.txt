@@ -1,0 +1,23 @@
+администрирование
+	dmesg.txt useradd.txt cron.txt watch.txt kill.txt ps.txt pidof.txt sync.txt uname.txt dpkg.txt apt-cache.txt apt-get.txt
+относящееся к администрированию
+	date.txt dmesg.txt useradd.txt chmod.txt chown.txt touch.txt cron.txt watch.txt df.txt mdu.txt kill.txt login.txt mount.txt umount.txt netstat.txt ntpc.txt ntpcsync.txt ps.txt pidof.txt whoami.txt shutdown.txt halt.txt poweroff.txt reboot.txt uname.txt tail.txt dpkg.txt robocopy.txt rsync.txt lsblk.txt blkid.txt fdisk.txt blockdev.txt ssh.txt apt-cache.txt
+программирование
+	date.txt pwd.txt cat.txt patch.txt awk.txt cut.txt grep.txt egrep.txt fgrep.txt sed.txt sort.txt wc.txt gcc.txt echo.txt sleep.txt tee.txt test.txt lex.txt yacc.txt jq.txt xargs.txt printf.txt git.txt
+мультимедия
+	ffmpeg.txt convert.txt
+файловая система
+	rsync.txt tmsu.txt chmod.txt chown.txt touch.txt mount.txt umount.txt cat.txt cp.txt dd.txt mv.txt mkdir.txt tail.txt gzip.txt gunzip.txt tar.txt zcat.txt ln.txt ls.txt find.txt rm.txt unlink.txt rmdir.txt robocopy.txt lsblk.txt blkid.txt fdisk.txt
+пользовательское
+	man.txt tmux.txt vim.txt login.txt pwd.txt whoami.txt shutdown.txt halt.txt poweroff.txt reboot.txt ls.txt find.txt locate.txt diff.txt patch.txt grep.txt egrep.txt fgrep.txt more.txt less.txt most.txt vim.txt emacs.txt nano.txt trans.txt
+сеть
+	netstat.txt ntpc.txt ntpcsync.txt nc.txt ping.txt wget.txt scp.txt ssh.txt
+msdos
+	mdu.txt
+интерпретаторы
+	sh.txt bash.txt fish.txt zsh.txt ash.txt csh.txt ksh.txt
+fish
+	echo(fish).txt
+cmd
+	robocopy.txt
+powershell

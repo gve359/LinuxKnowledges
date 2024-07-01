@@ -1,0 +1,28 @@
+tar - архиватор
+
+СИНАПСИС
+Сжимает другими архиваторами. А tar видимо менеджер.
+По умолчанию работает с потоками, поэтому нужно явно указывать параметры для работы с файлом.
+
+
+
+ФЛАГИ
+	-c --create  - создать архив
+	-x --extract - извлечь из архива
+	-f --file    - файл с которым работать
+	-p --preserve-permissions - Включает сохранение владельцев и прав доступа для файлов.
+				    Для рута по умолчанию. Поэтому не обязательный флаг.
+	-v --verbose - писать, какой файл обрабатывает
+	-C, --directory=DIR  - куда разархивировать. По умолчанию pwd.
+
+	Методы сжатия
+	z, --gzip, --gunzip, --ungzip
+
+ПРИМЕРЫ
+	простое архивироание
+	tar --create --gzip inputPath --file outputPath.tar.gz
+	tar --create --gzip inputPath > file outputPath.tar.gz
+
+	простое разархивирование
+	tar --extract --gzip --file archive.tar.gz --directory outputFolder
+
